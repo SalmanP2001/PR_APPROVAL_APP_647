@@ -1,0 +1,124 @@
+managed implementation in class zbp_r_view_pr1 unique;
+strict ( 2 );
+with draft;
+define behavior for Z_R_VIEW_PR //alias <alias_name>
+persistent table zpr_db
+draft table ZDRAFT_PR
+lock master total etag Locallastchanged
+authorization master ( instance )
+etag master Locallastchanged
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( readonly, numbering : managed ) Prnumber;
+  field ( readonly ) PrId ,Status ,RejectionReason,Fiscalyear;
+  association _Child { create;with draft; }
+
+//***************************ACtions ******************************************************************************
+
+ validation Validate_Totalvalue on save { field Totalvalue; create; update; }
+
+//*************************** Determinations **********************************************************************
+
+//determination Setprnumber on save { field PrNumber; }
+determination set_auto_fiscal_year on save { create; }
+determination Setprnumber on save {create;}
+//*************************** Draft ACTIONS *************************
+    draft action Edit;
+    draft determine action Prepare;
+    draft action Resume;
+    draft action Activate optimized;
+    draft action Discard ;
+
+//******************************* PArent actions *********************
+
+     action ( features : instance ) AcceptPR result [1] $self;
+     action ( features : instance ) RejectPR parameter  ZABSTACT_PR result [1] $self;
+     action ( features : instance ) SubmitPR result [1] $self;
+     action ( features : instance ) CancelPR result [1] $self;
+
+
+
+
+//**************************** Mapping ****************************
+
+ mapping for zpr_db
+  {
+
+  Createdat = createdat ;
+  Createdby = createdby ;
+  CukyField = cuky_field ;
+  PrId      = pr_id ;
+  Fiscalyear = fiscalyear ;
+  Prnumber = prnumber ;
+  RejectionReason = rejection_reason ;
+  Status = status ;
+  Totalvalue = totalvalue ;
+  Lastchangedat = lastchangedat ;
+  Lastchangedby= lastchangedby;
+  locallastchanged = locallastchanged ;
+
+  }
+
+
+}
+
+define behavior for Z_R_VIEW_ITEM //alias <alias_name>
+persistent table zitem_db
+draft table ZDRAFT_ITEM
+lock dependent by _Root
+authorization dependent by _Root
+etag master Locallastchanged
+{
+  update(precheck);
+  delete;
+  field (mandatory) Price, Quantity;
+  field ( readonly ) Prnumber , ItemId ,PrId , Fiscalyear;
+  field ( readonly , numbering : managed ) ItemNo;
+  association _Root{with draft;}
+
+//******************************** Validation *********************
+
+validation Validate on save { field Price , Quantity ; create; update; }
+
+//******************************** Determination *********************
+determination SetFiscalYear on modify { create; } // this will show fiscyear in childtable
+determination setNetValue on modify { create;delete;field Price ,Quantity ;}
+determination CalculateAmount on modify { create; update; delete; field Netvalue; }
+determination Setprid on save { create; } // to fetch into the child table
+
+//********************************** Side effect ***********************
+
+side effects {
+
+           field Price affects field Netvalue ;
+           field Quantity affects field Netvalue ;
+
+            }
+
+
+
+
+  mapping for ZITEM_DB{
+
+  Currency = currency ;
+    Fiscalyear = fiscalyear ;
+    ItemNo = item_no;
+    ItemId = item_id ;
+    Material = material ;
+    Price = price ;
+    PrId = pr_id;
+    Prnumber = prnumber ;
+    Quantity = quantity ;
+    Netvalue = netvalue ;
+    locallastchanged = locallastchanged ;
+  Lastchangedat = lastchangedat ;
+  Lastchangedby= lastchangedby;
+  Createdat = createdat ;
+  Createdby = createdby ;
+
+  }
+determination Setitemid on save { create; }
+
+}

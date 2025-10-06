@@ -1,0 +1,66 @@
+@Metadata.layer: #CORE
+
+@UI.headerInfo: { typeName: 'PR ITEM',
+                  typeNamePlural: 'PR ITEMS' ,
+                  title: { type: #STANDARD, value: 'ItemId' } }
+
+annotate view Z_C_VIEW_ITEM
+    with 
+{
+
+@UI.facet: [
+ 
+                   {
+                    id: 'CHILD' ,
+                    label: 'ITEM Details',
+                    type: #IDENTIFICATION_REFERENCE,
+                    purpose: #STANDARD,
+                    position: 10
+                  }
+                 ]
+@UI.hidden: true
+   Prnumber;
+@UI.hidden: true
+   ItemNo;
+
+ @UI.lineItem: [{ label: 'Pridr' , position: 10 }]
+ @UI.identification: [{ label: 'Pridr' , position: 10 }]
+
+   PrId;
+ @UI.lineItem: [{ label: ' ItemId' , position: 20 }]
+ @UI.identification: [{ label: ' ItemId' , position: 20 }]
+   ItemId;
+ @UI.lineItem: [{ label: 'Fiscalyear' , position: 30 }]
+ @UI.identification: [{ label: 'Fiscalyear' , position: 30 }]
+    Fiscalyear;
+ @UI.lineItem: [{ label: 'Material' , position: 40 }]
+ @UI.identification: [{ label: 'Material' , position: 40 }]
+    Material;
+ @UI.lineItem: [{ label: 'Quantity' , position: 50 }]
+ @UI.identification: [{ label: 'Quantity' , position: 50 }]
+    Quantity;
+@UI.lineItem: [{ label: 'Price', position: 60 }]
+ @UI.identification: [{ label: ' Price' , position: 60 }]
+    Price;
+ @UI.lineItem: [{ label: 'Netvalue' , position: 80 }]
+ @UI.identification: [{ label: 'Netvalue' , position: 80 }]
+    Netvalue;
+@Consumption.valueHelpDefinition: [{ entity : {name: 'Z_R_CURRENCY', element : 'Value' }}] 
+ @UI.lineItem: [{ label: 'Currency' , position: 70 }]
+ @UI.identification: [{ label: 'Currency' , position: 70 }]
+   Currency;
+   @UI.hidden: true
+   Createdby;
+   @UI.hidden: true
+   Createdat;
+   @UI.hidden: true
+   Lastchangedby;
+   @UI.hidden: true
+   Lastchangedat;
+   @UI.hidden: true
+   Locallastchanged;
+   /* Associations */
+   @UI.hidden: true
+   _Root;
+    
+}

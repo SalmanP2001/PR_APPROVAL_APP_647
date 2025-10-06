@@ -1,0 +1,5 @@
+@EndUserText.label: 'SD'
+define service Z_SD1 {
+  expose Z_C_VIEW_PR;
+  expose Z_C_VIEW_ITEM;
+}

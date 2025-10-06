@@ -1,0 +1,75 @@
+@Metadata.layer: #CORE
+@UI.headerInfo: { typeName: 'PR ',
+                  typeNamePlural: 'Purchase Requisitions',
+                  title: { type: #STANDARD, value: 'PrId' } }
+annotate entity Z_C_VIEW_PR with
+{
+
+  @UI.facet: [
+
+                     {
+                      id: 'CHILD' ,
+                      label: 'PR DETAILS',
+                      type: #IDENTIFICATION_REFERENCE,
+                      position: 10,
+                      purpose: #STANDARD
+                    },
+
+
+         {
+                      id:'ItemId',
+                      label:'CREATED ITEMS',
+                      type: #LINEITEM_REFERENCE,
+                      purpose: #STANDARD,
+                      targetElement: '_Child',
+                      position: 20
+
+                   }
+
+                   ]
+  @UI.lineItem: [
+      { type: #FOR_ACTION , dataAction: 'AcceptPR' , label: 'AcceptPR'  } ,
+      { type: #FOR_ACTION , dataAction: 'RejectPR' , label: 'RejectPR'  },
+      { type: #FOR_ACTION , dataAction: 'CancelPR' , label: 'CancelPR'  } ,
+      { type: #FOR_ACTION , dataAction: 'SubmitPR' , label: 'SubmitPR' }
+  ]
+
+
+  @UI.hidden: true
+  Prnumber;
+
+  @UI.lineItem: [{ label: 'Pr Number' , position: 10  ,cssDefault.width: '7em' }]
+  @UI.identification: [{ label: 'Pr Number' , position: 10 }]
+
+  PrId;
+  @UI.lineItem: [{ label: 'Fiscalyear' , position: 20 ,cssDefault.width: '7em'  }]
+  @UI.identification: [{ label: 'Fiscalyear' , position: 20 }]
+  Fiscalyear;
+
+  @UI.lineItem: [{ label: 'Status' , position: 50 , value: 'Status' , criticality: 'Statuscriticality' ,cssDefault.width: '8em'  } ]
+  @UI.identification: [{ label: 'Status' , position: 50 }]
+  Status;
+//  @Consumption.valueHelpDefinition: [{ entity : {name: 'Z_R_CURRENCY', element : 'Value' }}]
+//  @UI.lineItem: [{ label: 'Currency' , position: 40 ,cssDefault.width: '7em' }]
+//  @UI.identification: [{ label: 'Currency' , position: 40 }]
+ @UI.hidden: true
+  CukyField;
+  @UI.lineItem: [{ label: 'Totalvalue' , position: 30,cssDefault.width: '7em'  }]
+  @UI.identification: [{ label: 'Totalvalue' , position: 30 }]
+  Totalvalue;
+  @Consumption.valueHelpDefinition: [{ entity : {name: 'Z_R_REASON', element : 'Value' }}]
+  @UI.lineItem: [{ label: 'RejectionReason' , position: 60,cssDefault.width: '9em' }]
+  @UI.identification: [{ label: 'RejectionReason' , position: 60 }]
+  RejectionReason;
+  @UI.hidden: true
+  createdby;
+  @UI.lineItem: [{ label: 'Created At' , position: 70 ,cssDefault.width: '9em'  }]
+  @UI.identification: [{ label: 'Created At' , position: 70 }]
+  createdat;
+  @UI.hidden: true
+  Lastchangedby;
+  @UI.hidden: true
+  Lastchangedat;
+  @UI.hidden: true
+  Locallastchanged;
+}

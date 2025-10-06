@@ -1,0 +1,33 @@
+projection;
+strict ( 2 );
+use draft;
+use side effects;
+define behavior for Z_C_VIEW_PR //alias <alias_name>
+{
+  use create;
+  use update;
+  use delete;
+//**********************Use the draft action***********
+  use action Prepare;
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Resume;
+
+//********************** Use the Action *******************
+
+  use action AcceptPR ;
+  use action RejectPR;
+  use action CancelPR;
+  use action SubmitPR;
+
+  use association _Child { create;with draft; }
+}
+
+define behavior for Z_C_VIEW_ITEM //alias <alias_name>
+{
+  use update;
+  use delete;
+
+  use association _Root{ with draft; }
+}
